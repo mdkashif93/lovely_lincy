@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For You</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Inter,sans-serif;
+background:linear-gradient(135deg,#fff,#fff7f8,#fceff2);
+overflow:hidden;
+color:#5f4a4a;
+}
+.bg{
+position:fixed;inset:0;
+background:radial-gradient(circle at 20% 20%,rgba(255,215,220,.8),transparent 35%),
+radial-gradient(circle at 80% 70%,rgba(255,225,210,.8),transparent 35%);
+}
+.particle{position:absolute;font-size:18px;opacity:.4;animation:float 15s linear infinite}
+@keyframes float{from{transform:translateY(100vh)}to{transform:translateY(-120px)}}
+.page{height:100vh;display:none;justify-content:center;align-items:center;padding:20px}
+.active{display:flex}
+.card{
+max-width:720px;width:100%;
+background:rgba(255,255,255,.55);
+backdrop-filter:blur(18px);
+border-radius:32px;
+padding:40px;
+box-shadow:0 15px 50px rgba(0,0,0,.08);
+text-align:center;
+}
+h1{font-family:"Playfair Display",serif;font-size:clamp(2.4rem,6vw,4.6rem);margin:0 0 10px}
+p{line-height:1.7}
+.btn{
+padding:14px 28px;border:none;border-radius:999px;
+cursor:pointer;font-size:16px;margin:8px;
+}
+.primary{
+background:linear-gradient(90deg,#e9b7c4,#dca0af);
+color:white;
+}
+.secondary{background:#f4ecee}
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.opt{padding:18px;border:2px solid #eee;border-radius:18px;cursor:pointer}
+.sel{border-color:#dca0af;background:#fff3f6}
+</style>
+</head>
+<body>
+<div class="bg" id="bg"></div>
+
+<div class="page active" id="p1">
+<div class="card">
+<h1>I built this page for one person only.</h1>
+<p>And that person is you.</p>
+<button class="btn primary" onclick="go(2)">Continue ✨</button>
+</div>
+</div>
+
+<div class="page" id="p2">
+<div class="card">
+<h1>Most people send a text.</h1>
+<p>I thought I'd make something memorable instead.</p>
+<p>Would you allow me to take you out for an evening worth remembering?</p>
+<button class="btn primary" onclick="go(25)">Yes 💕</button>
+<button id="no" class="btn secondary">No</button>
+</div>
+</div>
+
+<div class="page" id="p25">
+<div class="card">
+
+<div style="font-size:80px;">🤍✨</div>
+
+<h1>WAIT WHAT?</h1>
+
+<p>
+You actually said yes.
+</p>
+<P>
+    I was 90% sure you'd ghost me 😭
+</P>
+<p>
+I spent more time building this page than I expected,
+so this feels like a pretty good outcome.
+</p>
+
+<p>
+Let's pick a date.
+</p>
+
+<br>
+
+<button class="btn primary" onclick="go(3)">
+Let's Do This →
+</button>
+
+</div>
+</div>
+
+<div class="page" id="p3">
+    <div class="card">
+        <h1>When are you free?</h1>
+
+        <div style="display:flex;flex-direction:column;gap:15px;align-items:center;">
+
+            <input
+                type="date"
+                id="date"
+                style="padding:12px;border-radius:12px;border:1px solid #ddd;font-size:16px;width:220px;">
+
+            <input
+                type="time"
+                id="time"
+                style="padding:12px;border-radius:12px;border:1px solid #ddd;font-size:16px;width:220px;">
+
+        </div>
+
+        <br>
+
+        <button class="btn primary" onclick="go(4)">Next</button>
+    </div>
+</div>
+
+<div class="page" id="p4">
+<div class="card">
+<h1>Choose the vibe</h1>
+<div class="options">
+<div class="opt">🍷 Fine Dining</div>
+<div class="opt">🌇 Sunset Walk</div>
+<div class="opt">☕ Coffee & Conversation</div>
+<div class="opt">🏙 Rooftop Evening</div>
+<div class="opt">🎭 Surprise Me</div>
+<div class="opt">🎬 Movie Night</div>
+</div>
+<br>
+<button class="btn primary" onclick="finish()">Perfect ✨</button>
+</div>
+</div>
+
+<div class="page" id="p5">
+<div class="card">
+<h1>It's a Date 💖</h1>
+<p><b>Date:</b> <span id="outDate"></span></p>
+<p><b>Experience:</b> <span id="outExp"></span></p>
+<p>Perfect. I'll make sure it's worth your time.</p>
+<button class="btn primary" onclick="shareWA()">Share on WhatsApp</button>
+</div>
+</div>
+
+<script>
+for(let i=0;i<30;i++){
+ let d=document.createElement('div');
+ d.className='particle';
+ d.innerHTML='🤍';
+ d.style.left=Math.random()*100+'vw';
+ d.style.animationDelay=Math.random()*15+'s';
+ document.body.appendChild(d);
+}
+function go(n){
+ document.querySelector('.active').classList.remove('active');
+ document.getElementById('p'+n).classList.add('active');
+}
+let picked=[];
+document.querySelectorAll('.opt').forEach(x=>{
+ x.onclick=()=>{
+  x.classList.toggle('sel');
+  let t=x.innerText;
+  picked.includes(t)?picked=picked.filter(v=>v!==t):picked.push(t);
+ }
+});
+const noBtn = document.getElementById('no');
+
+noBtn.style.position = "relative";
+noBtn.style.transition = "all 0.35s ease";
+
+noBtn.addEventListener("mousemove", function() {
+
+    const moveX = (Math.random() * 200) - 100;
+    const moveY = (Math.random() * 100) - 50;
+
+    noBtn.style.transform =
+        `translate(${moveX}px, ${moveY}px)`;
+
+});
+function finish(){
+let selectedDate = document.getElementById('date').value || 'Not selected';
+let selectedTime = document.getElementById('time').value || 'Not selected';
+
+document.getElementById('outDate').innerText =
+selectedDate + ' at ' + selectedTime;
+ document.getElementById('outExp').innerText=picked.join(', ')||'Not selected';
+ go(5);
+}
+
+function shareWA(){
+
+let selectedDate =
+document.getElementById('date').value || 'Not selected';
+
+let selectedTime =
+document.getElementById('time').value || 'Not selected';
+
+let selectedExperience =
+picked.join(', ') || 'Surprise Me';
+
+let message =
+`💌 DATE INVITATION ACCEPTED 💌
+
+Hey! 😊
+
+I officially accepted your invitation.
+
+📅 Date: ${selectedDate}
+⏰ Time: ${selectedTime}
+
+✨ Plan:
+${selectedExperience}
+
+I'm genuinely looking forward to spending time with you and creating some great memories together.
+https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif
+See you soon Kashif💖`;
+
+window.open(
+'https://wa.me/?text=' +
+encodeURIComponent(message)
+);
+
+}
+</script>
+</body>
+</html>
